@@ -10,13 +10,12 @@ pubsub.subscribe(['c1'])
 
 pygame.init()
 
-exit = 0
 window = pygame.display.set_mode((800, 600)) 
 pygame.display.set_caption('Angry')
 screen = pygame.display.get_surface()
 angryBird = pygame.image.load('./images/AngryBird.png')
 background = pygame.image.load('./images/Background.png')
-'''
+
 while True:
 
     for m in pubsub.listen():
@@ -34,6 +33,3 @@ while True:
     screen.blit(background, (0,0))
     screen.blit(angryBird, (x,y))
     pygame.display.update()
-'''
-while 1:
-        
