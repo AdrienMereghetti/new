@@ -5,9 +5,7 @@ from pygame.locals import *
 
 pygame.init()
 pygame.joystick.init()
-
-
-#if len(pygame.joystick.get_count() > 0):
+#Vérifie si un pad est branché
 try:
     stick = pygame.joystick.Joystick(0)
     stick.init()
@@ -15,25 +13,26 @@ try:
 except:
     print 'pas de joystick !!'
     
+#Création de la fenetre
 window = pygame.display.set_mode((800, 600)) 
 pygame.display.set_caption('Angry') 
-
 screen = pygame.display.get_surface() 
 
-
+#chargement des images
 angryBird = pygame.image.load('./images/AngryBird.png')
 angryBlackBird = pygame.image.load('./images/AngryBlackBird.png')
 angryGreenBird = pygame.image.load('./images/AngryGreenBird.png')
 angryPiggy = pygame.image.load('./images/AngryPiggy.png')
 background = pygame.image.load('./images/Background.png')
 
-
+#Initalisation de la position des images par défaut
 x, y, a, b, c, d, e, f = 0, 0, 200, 0, 400, 0, 0, 200
 
 while True: 
     evts = pygame.event.get()
     if len(evts) > 0:
         for evt in evts:
+            #Mouvement du black bird grâce au HAT
             if evt.type == pygame.locals.JOYHATMOTION:
                 if evt.value[0] == -1 and evt.value[1] == 0:
                     c -= 10
@@ -54,9 +53,9 @@ while True:
                     d += 10
                     if d > 400:
                         d = 400
-
+            #Mouvement des axes + Gachettes
             elif evt.type == pygame.locals.JOYAXISMOTION:
-                #print 'joy axis motion', evt.axis, evt.value
+                #Joystick Gauche = Angry bird rouge
                 if evt.axis == 0:
                     x = int((evt.value + 1.0) * 300)
                     if x > 600:
@@ -65,6 +64,7 @@ while True:
                     y = int((evt.value + 1.0) * 200)
                     if y > 400:
                         y = 400
+                #Joystick Droite = Pig
                 elif evt.axis == 3:
                     a = int((evt.value + 1.0) * 300)
                     if a > 600:
@@ -73,7 +73,7 @@ while True:
                     b = int((evt.value + 1.0) * 200)
                     if b > 400:
                         b = 400
-                        
+                #Gachette Gauche/Droite = Angry bird rouge        
                 elif evt.axis == 2:
                     e = int((evt.value + 1.0) * 300)
                     if e > 600:
@@ -82,16 +82,14 @@ while True:
                     f = int((evt.value + 1.0) * 200)
                     if f > 400:
                         f = 400
-            
+            #Echap pour quiter
             elif evt.type == pygame.locals.KEYDOWN:
                 if evt.key == pygame.locals.K_ESCAPE:
                     print 'sortie ...'
                     sys.exit()
             else:
-                #print 'evt inconnu', evt.type, evt
                 pass
-        
-        # si touche gauche alors 
+    #Affichage du Background et des Angry Birds   
     screen.blit(background, (0,0))
     screen.blit(angryBird, (x,y))
     screen.blit(angryGreenBird, (e,f))
