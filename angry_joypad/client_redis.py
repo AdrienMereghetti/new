@@ -18,7 +18,7 @@ angryBlackBird = pygame.image.load('./images/AngryBlackBird.png')
 angryGreenBird = pygame.image.load('./images/AngryGreenBird.png')
 angryPiggy = pygame.image.load('./images/AngryPiggy.png')
 background = pygame.image.load('./images/Background2.png')
-
+x, y = 0, 0
 '''
 while True:
 
@@ -51,7 +51,7 @@ while 1:
         f = int(cx.get('f'))
         
         screen.blit(background, (0,0))
-        #screen.blit(angryBird, (x),(y))
+        screen.blit(angryBird, (x,y))
         screen.blit(angryGreenBird, (e,f))
         screen.blit(angryPiggy, (a,b))
         screen.blit(angryBlackBird, (c,d))

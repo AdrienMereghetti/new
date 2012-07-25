@@ -18,7 +18,8 @@ except:
     print 'pas de joystick !!'
     sys.exit()
 
-x, y, a, b, c, d, e, f = 0, 0, 200, 0, 400, 0, 0, 200  
+
+a, b, c, d, e, f = 200, 0, 400, 0, 0, 200  
 
 cx.set('c', c)
 cx.set('d', d)
@@ -35,7 +36,7 @@ while True:
             #Mouvement des axes + Gachettes
             if evt.type == pygame.locals.JOYAXISMOTION:
                 #Joystick Gauche = Angry bird rouge
-                if evt.axis == 0:
+                '''if evt.axis == 0:
                     print 'joy axis motion', evt.axis, evt.value
                     x = int((evt.value + 1.0) * 300)
                     if x > 600:
@@ -49,9 +50,11 @@ while True:
                     if y > 400:
                         y = 400
                     cx.set('y', y)
-                    cx.publish('c1', y)
+                    cx.publish('c1', y)'''
                 #Joystick Droite = Pig    
-                elif evt.axis == 3:
+                
+                if evt.axis == 3:
+                    print 'joy axis motion', evt.axis, evt.value
                     a = int((evt.value + 1.0) * 300)
                     if a > 600:
                         a = 600
