@@ -13,10 +13,10 @@ window = pygame.display.set_mode((800, 600))
 pygame.display.set_caption('Angry')
 screen = pygame.display.get_surface()
 
-angryBird = pygame.image.load('./images/AngryBird.png')
-angryBlackBird = pygame.image.load('./images/AngryBlackBird.png')
-angryGreenBird = pygame.image.load('./images/AngryGreenBird.png')
-angryPiggy = pygame.image.load('./images/AngryPiggy.png')
+angryBird = pygame.image.load('images/AngryBird.png')
+angryBlackBird = pygame.image.load('images/AngryBlackBird.png')
+angryGreenBird = pygame.image.load('images/AngryGreenBird.png')
+angryPiggy = pygame.image.load('images/AngryPiggy.png')
 background = pygame.image.load('./images/Background2.png')
 x, y = 0, 0
 '''
