@@ -23,7 +23,7 @@ angryBird = pygame.image.load('./images/AngryBird.png')
 angryBlackBird = pygame.image.load('./images/AngryBlackBird.png')
 angryGreenBird = pygame.image.load('./images/AngryGreenBird.png')
 angryPiggy = pygame.image.load('./images/AngryPiggy.png')
-background = pygame.image.load('./images/Background.png')
+background = pygame.image.load('./images/Background2.png')
 
 #Initalisation de la position des images par défaut
 x, y, a, b, c, d, e, f = 0, 0, 200, 0, 400, 0, 0, 200
