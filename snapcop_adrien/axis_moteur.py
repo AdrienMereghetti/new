@@ -10,7 +10,7 @@ window = pygame.display.set_mode((1600, 600))
 pygame.display.set_caption('Axis Joystick')
 screen = pygame.display.get_surface()
 
-a, b, c, d = 375, 275, 1175, 275
+a, b, c, d, e = 375, 275, 1175, 275, -300
 
 def afficherText(i):
     font = pygame.font.Font(None, 36)
@@ -41,8 +41,13 @@ while True:
                     t = afficherText('Bouton %i' % (i + 1))
                     print t
                     time.sleep(1)
+                '''elif evt.button == 11:
+                    afficherText('Fin du programme')
+                    time.sleep(2)
+                    exit()
                 else:
-                    pass
+                    pass'''
+                    
             if evt.type == pygame.locals.JOYAXISMOTION:
                 if evt.axis == 0:
                     if evt.value > 0.2: 
@@ -62,14 +67,22 @@ while True:
                         b = 75
                     elif c > 1475:
                         c = 1475
-                    elif c < 975:
-                        c = 975
+                    elif c < 875:
+                        c = 875
                 elif evt.axis == 2:
                     d = 75 +(int((evt.value + 1.0) * 200))
                     if d > 475:
                         d = 475
                     elif d < 75:
                         d = 75
+                
+                elif evt.axis == 3:
+                    e =int((evt.value + 1.0) * -300)
+                    if e < -600:
+                        e = -600
+                    elif e > 0:
+                        e = 0
+                
                 else: 
                     pass
             
@@ -80,9 +93,11 @@ while True:
         y = pygame.image.load('image/y.gif')
         y2 = pygame.image.load('image/y.gif')
         z = pygame.image.load('image/z.gif')
+        barre = pygame.image.load('image/barre.png')
         screen.blit(background, (0,0))
         screen.blit(x, (a,275))
         screen.blit(y, (375, b))
         screen.blit(y2, (c,275))
         screen.blit(z, (1175, d))
+        screen.blit(barre, (796, e))
         pygame.display.update()
