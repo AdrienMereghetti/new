@@ -9,14 +9,15 @@ pygame.font.init()
 window = pygame.display.set_mode((1600, 600)) 
 pygame.display.set_caption('Axis Joystick 2')
 screen = pygame.display.get_surface()
-
+#positions image
 a, b, c, d, e = 375, 275, 1175, 275, -300
 
 i, axe_x, axe_y, axe_z, button_down, hat_z = '0', '0', '0', '0', '0', '0'
 
-def afficherText(i):
+#fonction pour afficher du texte a l'écran
+def afficherText(i, x, y, z):
     font = pygame.font.Font(None, 36)
-    text = font.render(i, 1, (255, 255, 255))
+    text = font.render(i, 1, (x, y, z))
     textpos = text.get_rect()
     textpos.centerx = background.get_rect().centerx
     textpos.centery = background.get_rect().centery
@@ -24,6 +25,7 @@ def afficherText(i):
 
     pygame.display.flip()
 
+#Vérifie si un joystick est branché
 try:
     stick = pygame.joystick.Joystick(0)
     stick.init()
@@ -36,6 +38,7 @@ while True:
     evts = pygame.event.get()
     if len(evts) > 0:
         for evt in evts:
+            #Bouttons
             if evt.type == pygame.locals.JOYBUTTONDOWN:
                 i = evt.button
                 if evt.button == i:
@@ -44,7 +47,7 @@ while True:
                 i = evt.button
                 if evt.button == i:
                     button_down = '0'
-            
+            #Mouvement X et Y grâce au "HAT"
             elif evt.type == pygame.locals.JOYHATMOTION:
                 if evt.value[0] == -1 and evt.value[1] == 0:
                     a -= 1
@@ -76,6 +79,7 @@ while True:
                 else:
                     hat_z = '0'
             
+            # Axes X, Y et Z
             elif evt.type == pygame.locals.JOYAXISMOTION:
                 if evt.axis == 0:
                     if evt.value > 0.2 and evt.value < 0.9:
@@ -120,7 +124,7 @@ while True:
                     elif e > 0:
                         e = 0
     
-    
+    #Bouger cercle rouge
     elif axe_x == '+':
         a += 1
         if a > 675:
@@ -137,7 +141,7 @@ while True:
         a -= 2
         if a < 75:
             a = 75
-            
+    #Bouger cercle vert gauche
     elif axe_y == '+':
         b += 1
         if b > 475:
@@ -154,7 +158,7 @@ while True:
         b -= 2
         if b < 75:
             b = 75        
-            
+    #Bouger cercle vert droite        
     elif axe_y == '+':
         c += 1.5
         if c > 1475:
@@ -171,7 +175,7 @@ while True:
         c -= 3
         if c < 875:
             c = 875
-            
+    #Bouger cercle Bleu        
     elif axe_z == '+':
         d += 1
         if d > 475:
@@ -188,9 +192,9 @@ while True:
         d -= 2
         if d < 75:
             d = 75
-    
+    #Afficher 'Boutton #'
     elif button_down == '1':
-        t = afficherText('Bouton %i' % (i + 1))
+        t = afficherText(('Bouton %i' % (i + 1)), 255, 255, 255)
         print t
             
     '''elif hat_z == '+' and i == 9:
