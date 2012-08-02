@@ -18,8 +18,7 @@ def afficherText(i):
     textpos = text.get_rect()
     textpos.centerx = background.get_rect().centerx
     textpos.centery = background.get_rect().centery
-    background.blit(text, textpos)
-    screen.blit(background, (0, 0))
+    screen.blit(text, textpos)
     pygame.display.flip()
 
 try:
@@ -67,8 +66,8 @@ while True:
                         b = 75
                     elif c > 1475:
                         c = 1475
-                    elif c < 875:
-                        c = 875
+                    elif c < 975:
+                        c = 975
                 elif evt.axis == 2:
                     d = 75 +(int((evt.value + 1.0) * 200))
                     if d > 475:
