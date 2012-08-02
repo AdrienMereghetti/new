@@ -4,18 +4,6 @@ import sys, os, time, subprocess
 import pygame
 from pygame.locals import *
 
-
-def afficherText(i):
-    font = pygame.font.Font(None, 36)
-    text = font.render(i, 1, (255, 255, 255))
-    textpos = text.get_rect()
-    textpos.centerx = background.get_rect().centerx
-    textpos.centery = background.get_rect().centery
-    background.blit(text, textpos)
-    screen.blit(background, (0, 0))
-    pygame.display.flip()
-
-
 dossier_name = 'rendu'
 image_fs = 'Final_'
 

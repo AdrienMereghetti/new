@@ -22,9 +22,15 @@ def afficherText(i, x, y, z):
     textpos.centerx = background.get_rect().centerx
     textpos.centery = background.get_rect().centery
     screen.blit(text, textpos)
-
     pygame.display.flip()
-
+    if i == "Fin du programme":
+        bground = pygame.Surface(screen.get_size())
+        bground = bground.convert()
+        bground.fill((255, 255, 255))
+        screen.blit(bground, (0, 0))
+        screen.blit(text, textpos)
+        pygame.display.flip()       
+        
 #Vérifie si un joystick est branché
 try:
     stick = pygame.joystick.Joystick(0)
@@ -41,8 +47,13 @@ while True:
             #Bouttons
             if evt.type == pygame.locals.JOYBUTTONDOWN:
                 i = evt.button
-                if evt.button == i:
+                if evt.button == i and evt.button != 11:
                     button_down = '1'
+                elif evt.button == 11:
+                    exit = afficherText("Fin du programme", 255, 0, 255)
+                    print exit
+                    time.sleep(2)
+                    exit()
             elif evt.type == pygame.locals.JOYBUTTONUP:
                 i = evt.button
                 if evt.button == i:
