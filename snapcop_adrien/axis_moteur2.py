@@ -9,6 +9,7 @@ pygame.font.init()
 window = pygame.display.set_mode((1600, 600)) 
 pygame.display.set_caption('Axis Joystick 2')
 screen = pygame.display.get_surface()
+
 #positions image
 a, b, c, d, e = 375, 275, 1175, 275, -300
 
@@ -151,6 +152,7 @@ while True:
     elif axe_x == '--':
         a -= 2
         if a < 75:
+        
             a = 75
     #Bouger cercle vert gauche
     elif axe_y == '+':

@@ -1,23 +1,35 @@
-
 Messages redis
 =====================
 
-Demande 1 prise de vue déclanchée par un bouton joystick :
-pub sc:take_photo 1
+Identification de la prise de vue:
 
-Demande 5 prises de vue en rafale déclanchée par un autre bouton joystick :
-pub sc:take_photo 5
+    -Lancement du banc photo et de l'application "snapcop".
+    -On s'identifie (login/mot de passe).
+    -On choisi dans un menu "Nouvelle séance photo", on renseigne :
+        -le sujet de la séance
+        -les intervenants
+        -quelques champs (codification de la souche, sur quel substrat, durée de fermentation)
+    -On valide
 
-Quand une photo est téléchargée de l'appareil photo :
-pub sc:photo_taken images/DSC234774.jpeg
+Prise de vue: 
 
-Quand 5 photos sont prises en rafale  :
-pub sc:photo_taken images/DSC234775.jpeg
-pub sc:photo_taken images/DSC234776.jpeg
-pub sc:photo_taken images/DSC234777.jpeg
-pub sc:photo_taken images/DSC234778.jpeg
-pub sc:photo_taken images/DSC234779.jpeg
+    -on place le sujet
+    -bouton 1 du joystick
+    -démmarer les prises de vue
+    -message "Fin"
+    
+Avoir la série d'images
 
+    -liste des photos accessibles
 
+Avoir la photo stackée
 
+    -le résultat après traitement du focus stacking
+
+Avoir les indicateurs de biochimie
+    
+    liste :
+        -donner les indicateurs définis par rapport aux objectifs métier
+        -nombre de spores
+        -surface du mycélium (couche blanche)
 

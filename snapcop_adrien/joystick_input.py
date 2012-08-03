@@ -5,19 +5,10 @@ from pygame.locals import *
 
 import redis
 
-pygame.display.init()
 pygame.joystick.init()
+pygame.display.init()
 
 cx = redis.Redis()
-cx2 = redis.Redis()
-
-a, b, c, d, e, f, g, h = 375, 275, 375, 275, 1175, 275, 1175, 275
-
-cx.set('a', a)
-#cx.set('f', f)
-cx.publish('sc:joystick', a)
-#cx.publish('sc:joystick', b)
-
 
 try:
     stick = pygame.joystick.Joystick(0)
@@ -33,31 +24,58 @@ while True:
     if len(evts) > 0:
         for evt in evts:
             if evt.type == pygame.locals.JOYBUTTONDOWN:
-                i = evt.button
-                if evt.button == i: # boutons
-                    cx.publish('sc:joystick', str(i+1)) 
-                else:
-                    pass
-            elif evt.type == pygame.locals.JOYAXISMOTION:
-                if evt.axis == 0:
-                    a = int((evt.value + 1.0) * 375)
-                    if a > 775:
-                        a = 775
-                    elif a < 75:
-                        a = 75
-                    cx.set('a', a)
-                    cx.publish('sc:joystick', a)
-                elif evt.axis == 1:
-                    b = 100
-                    cx.publish('sc:joystick', b)
-                elif evt.axis == 2:
-                    c = 500
-                    cx.publish('sc:joystick', c)
-                elif evt.axis == 3:
-                    d = 1000
-                    cx.publish('sc:joystick', d)
+                if evt.button == 0:
+                    cx.publish('sc:take_photo', 'true')
+                elif evt.button == 1:
+                    cx.publish('sc:interface', 'launch')
+                elif evt.button == 11:
+                    cx.publish('sc:interface', 'quit')
+
+            if evt.type == pygame.locals.JOYAXISMOTION:
                 
-                else: # cas non géré
-                    pass
-            else: # cas non géré
+                if evt.axis == 3:
+                    if evt.value == 1:
+                        cx.publish('sc:vitesse', '1')
+                    elif evt.value < 0.9 and evt.value > 0:
+                        cx.publish('sc:vitesse', '2')
+                    elif evt.value == 0:
+                        cx.publish('sc:vitesse', '3')
+                    elif evt.value < 0 and evt.value > -0.9:
+                        cx.publish('sc:vitesse', '4')
+                    elif evt.value <= -1:
+                        cx.publish('sc:vitesse', '5')
+                    else:
+                        pass
+                
+                elif evt.axis == 0:
+                    if evt.value > 0.2:
+                        cx.publish('sc:axis', 'x+')
+                        axis_x = '+'
+                    elif evt.value < -0.2:
+                        cx.publish('sc:axis', 'x-')
+                    else:
+                        cx.publish('sc:axis', 'x0')
+                        
+                elif evt.axis == 1:
+                    if evt.value > 0.2:
+                        cx.publish('sc:axis', 'y+')
+                    elif evt.value < -0.2:
+                        cx.publish('sc:axis', 'y-')
+                    else:
+                        cx.publish('sc:axis', 'y0')
+
+                elif evt.axis == 2:
+                    if evt.value > 0.2:
+                        cx.publish('sc:axis', 'z+')
+                    elif evt.value < -0.2:
+                        cx.publish('sc:axis', 'z-')
+                    else:
+                        cx.publish('sc:axis', 'z0')
+                        
+                
+                    
+                else: 
+                   pass
+                    
+            else:
                 pass
