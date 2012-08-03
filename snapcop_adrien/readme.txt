@@ -32,4 +32,3 @@ Avoir les indicateurs de biochimie
         -donner les indicateurs définis par rapport aux objectifs métier
         -nombre de spores
         -surface du mycélium (couche blanche)
-

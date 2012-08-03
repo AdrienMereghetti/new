@@ -19,6 +19,6 @@ screen = pygame.display.get_surface()'''
 while True:
     for m in pubsub.listen():
         if m['data'] == '1' or m['data'] == '2' or m['data'] == '3' or m['data'] == '4' or m['data'] == '5':
-            vitesse = m['data']
+            print 'Vitesse = %s' % m['data']
         else:
-            axis = m['data']
+            print 'Axis = %s' % m['data']
