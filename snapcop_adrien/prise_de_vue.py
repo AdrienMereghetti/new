@@ -4,21 +4,23 @@ import sys, os, time, subprocess
 import pygame
 from pygame.locals import *
 
-dossier_name = 'rendu'
-image_fs = 'Final_'
+dossier_name = 'rendu_jeudi_09_aout'
+image_fs = 'Final_1'
+shoot_nb = 1
+interval = 10
+frames = 20
+comment = 'Test_%i' % shoot_nb
 
 pygame.font.init()
 pygame.joystick.init()
 pygame.display.init()
-window = pygame.display.set_mode((800, 600)) 
-pygame.display.set_caption('Visu photo stacker')
+window = pygame.display.set_mode((800, 800)) 
+pygame.display.set_caption('Visu photo stacker 09/08/12')
 screen = pygame.display.get_surface()
-shoot_nb = 4
-i = 1
+
 exit_loop1 = 'no'
 exit_loop2 = 'no'
 cmd3 = 'rm -rf %s' % dossier_name
-choix = 'm'
 
 def afficherText(i, x, y, z):
     background = pygame.Surface(screen.get_size())
@@ -59,7 +61,7 @@ except:
     print 'pas de joystick !!'
     sys.exit()
 
-'''#Choix du numéro de shoot
+#Choix du numéro de shoot
 while exit_loop1 != 'yes': 
     choix1 = afficherText("Indiquez le numero du shoot a l'aide du clavier numerique", 255, 0, 255)
     print choix1
@@ -67,27 +69,14 @@ while exit_loop1 != 'yes':
     if len(evts) > 0:
         for evt in evts:
             if evt.type == pygame.locals.KEYDOWN:
-                if evt.key == 259:
-                    shoot_nb = 3
-                    exit_loop1 = 'yes'
-                elif evt.key == 260:
-                    shoot_nb = 4 
-                    exit_loop1 = 'yes'
-                elif evt.key == 27:
+                if evt.key == 27:
                     exit = afficherText("Fin du programme", 255, 0, 255)
                     print exit
                     time.sleep(2)
                     exit()
-                elif evt.key != 259 or evt.key != 260 or evt.key != 27:
-                    bad = afficherText("Votre choix n'est pas correct ! Relancez le script", 255, 0, 255)
-                    print bad
-                    time.sleep(2)
-                    exit()
                 else:
-                    choix = 'e'      
-                    exit_loop1 = 'yes'  
-            else:
-                pass
+                    shoot_nb = int(evt.unicode)
+                    exit_loop1 = 'yes'
                 
 #Choix du défilement auto ou manuel des photos
 while exit_loop2 != 'yes': 
@@ -112,19 +101,30 @@ while exit_loop2 != 'yes':
                     choix = 'e'      
                     exit_loop2 = 'yes'  
             else:
-                pass'''
+                pass
+#Prise de vue
+for a in range(0, 4):
+    j = '.' * a
+    shooting = afficherText(("Prise de vue en cour %s" % j), 255, 0, 255) 
+    print shooting
+    time.sleep(0.5)
+    
+'''cmd_shoot = "cd shoot-09-08-12 && sudo gphoto2 --capture-image-and-download --interval %i --frames %i && exiftool -Comment=%s *.jpg && exiftool '-FileName<${comment}%-c.%e' *.jpg" % (interval, frames, comment)'''
+cmd_shoot = "exiftool -Comment=%s *.jpg && exiftool '-FileName<${comment}%-c.%e' *.jpg" % comment
+subprocess.check_output(cmd_shoot, shell=True)
 
 for a in range(0, 4):
     j = '.' * a
     chargement = afficherText(("Chargement %s" % j), 255, 0, 255) 
     print chargement
-    time.sleep(0.5)
-'''#Réduit la résolution et la qualité de toutes les photos du dossier shoot
-cmd = 'cd shoot && mkdir %s; for i in Test_%i*.jpg; do convert -quality 50 -resize 800x600 "$i" "%s/$i"; done && mv %s ..' % (dossier_name, shoot_nb, dossier_name, dossier_name)
+    time.sleep(0.5)    
+
+#Réduit la résolution et la qualité de toutes les photos du dossier shoot
+cmd = 'mkdir %s; for i in Test_%i*.jpg; do convert -quality 50 -resize 800x600 "$i" "%s/$i"; done && mv %s ..' % (dossier_name, shoot_nb, dossier_name, dossier_name)
 subprocess.check_output(cmd, shell=True)
 #Stack les photos basse qualité pour un rendu rapide
 cmd2 = 'enfuse -o %s%i.jpg --exposure-weight=1 --saturation-weight=0.1 --contrast-weight=1 --exposure-sigma=0 --exposure-mu=1 --gray-projector=l-star --hard-mask %s/*.jpg && mv %s%i.jpg %s' % (image_fs, shoot_nb, dossier_name, image_fs, shoot_nb, dossier_name)
-subprocess.check_output(cmd2, shell=True)'''
+subprocess.check_output(cmd2, shell=True)
 #Defilement manuel des photos
 if choix == 'm':
     go = afficherText("Utilisez le HAT du Joystick pour faire defiler les photos", 255, 0, 255)
