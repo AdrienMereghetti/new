@@ -1,26 +1,40 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import sys, os, time, subprocess
 import pygame
 from pygame.locals import *
 
-dossier_name = 'rendu_jeudi_09_aout'
-image_fs = 'Final_1'
+day = time.strftime("%d-%m-%Y", time.localtime())
+dossier = 'shoot-%s' % day
+dossier_name = 'rendu-%s' % day
+i = 1
 shoot_nb = 1
+image_fs = 'Final_%i' % shoot_nb
 interval = 10
-frames = 20
+frames = 5
 comment = 'Test_%i' % shoot_nb
 
 pygame.font.init()
 pygame.joystick.init()
 pygame.display.init()
 window = pygame.display.set_mode((800, 800)) 
-pygame.display.set_caption('Visu photo stacker 09/08/12')
+pygame.display.set_caption('Visu photo stacker %s' % day)
 screen = pygame.display.get_surface()
 
 exit_loop1 = 'no'
 exit_loop2 = 'no'
 cmd3 = 'rm -rf %s' % dossier_name
+
+try:
+    os.mkdir(dossier)
+except:
+    pass
+    
+try:
+    os.mkdir('%s/%s' % (dossier, dossier_name))
+except:
+    pass
 
 def afficherText(i, x, y, z):
     background = pygame.Surface(screen.get_size())
@@ -109,9 +123,12 @@ for a in range(0, 4):
     print shooting
     time.sleep(0.5)
     
-'''cmd_shoot = "cd shoot-09-08-12 && sudo gphoto2 --capture-image-and-download --interval %i --frames %i && exiftool -Comment=%s *.jpg && exiftool '-FileName<${comment}%-c.%e' *.jpg" % (interval, frames, comment)'''
-cmd_shoot = "exiftool -Comment=%s *.jpg && exiftool '-FileName<${comment}%-c.%e' *.jpg" % comment
-subprocess.check_output(cmd_shoot, shell=True)
+for i in range(0, frames):
+    filename = 'Test_%s-%i.jpg' % (shoot_nb, i)
+    cmd = 'sudo gphoto2 --capture-image-and-download --force-overwrite --filename %s && sudo mv %s %s' % (filename, filename, dossier)
+    subprocess.check_output(cmd, shell=True)
+    shooting = afficherText(("Photos prisent : %i/%i" % (i+1, frames)), 255, 0, 255) 
+    print shooting
 
 for a in range(0, 4):
     j = '.' * a
@@ -120,10 +137,14 @@ for a in range(0, 4):
     time.sleep(0.5)    
 
 #Réduit la résolution et la qualité de toutes les photos du dossier shoot
-cmd = 'mkdir %s; for i in Test_%i*.jpg; do convert -quality 50 -resize 800x600 "$i" "%s/$i"; done && mv %s ..' % (dossier_name, shoot_nb, dossier_name, dossier_name)
+cmd = 'cd %s; for i in Test_%i*.jpg; do convert -quality 50 -resize 800x600 "$i" "%s/$i"; done && mv %s ..' % (dossier, shoot_nb, dossier_name, dossier_name)
 subprocess.check_output(cmd, shell=True)
+'''try:
+    shutil.move('%s ..' % dossier_name)
+except:
+    pass'''
 #Stack les photos basse qualité pour un rendu rapide
-cmd2 = 'enfuse -o %s%i.jpg --exposure-weight=1 --saturation-weight=0.1 --contrast-weight=1 --exposure-sigma=0 --exposure-mu=1 --gray-projector=l-star --hard-mask %s/*.jpg && mv %s%i.jpg %s' % (image_fs, shoot_nb, dossier_name, image_fs, shoot_nb, dossier_name)
+cmd2 = 'enfuse -o %s.jpg --exposure-weight=1 --saturation-weight=0.1 --contrast-weight=1 --exposure-sigma=0 --exposure-mu=1 --gray-projector=l-star --hard-mask %s/*.jpg && mv %s.jpg %s' % (image_fs, dossier_name, image_fs, dossier_name)
 subprocess.check_output(cmd2, shell=True)
 #Defilement manuel des photos
 if choix == 'm':
@@ -143,11 +164,11 @@ if choix == 'm':
                             image_name = 'Test_%i.jpg' % shoot_nb
                             
                     elif evt.value[0] == 1 and evt.value[1] == 0:
-                        if i <17:
+                        if i <(frames-1):
                             i += 1
                             image_name = 'Test_%i-%i.jpg' % (shoot_nb, i)
                         else:
-                            i = 17
+                            i = (frames-1)
                             image_name = '%s%i.jpg' % (image_fs, shoot_nb)
                         
                         
@@ -194,16 +215,16 @@ if choix == 'm':
 #Défilement automatique des photos
 elif choix == 'a':
     while True:
-        image = pygame.image.load('%s/Test_%i.jpg' % (dossier_name, shoot_nb))
+        '''image = pygame.image.load('%s/Test_%i.jpg' % (dossier_name, shoot_nb))
         screen.blit(image, (0,0))
         pygame.display.update()
-        time.sleep(0.3)
-        for i in range(1,18):
+        time.sleep(0.3)'''
+        for i in range(0,(frames)):
             image_name = 'Test_%i-%i.jpg' % (shoot_nb, i)
             image = pygame.image.load('%s/%s' % (dossier_name, image_name))
             screen.blit(image, (0,0))
             pygame.display.update()
-            time.sleep(0.3)
+            time.sleep(0.5)
             evts = pygame.event.get()
             if len(evts) > 0:
                 for evt in evts:
@@ -216,7 +237,7 @@ elif choix == 'a':
                             exit()
                         else: 
                             pass
-        final = pygame.image.load(('%s/%s%i.jpg') % (dossier_name, image_fs, shoot_nb))
+        final = pygame.image.load(('%s/%s.jpg') % (dossier_name, image_fs))
         screen.blit(final, (0,0))
         pygame.display.update()
         time.sleep(2)

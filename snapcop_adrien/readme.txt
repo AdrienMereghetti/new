@@ -32,3 +32,16 @@ Avoir les indicateurs de biochimie
         -donner les indicateurs définis par rapport aux objectifs métier
         -nombre de spores
         -surface du mycélium (couche blanche)
+        
+        
+bouton joystick 
+
+5   5
+6   10
+7   15  
+8   20
+9   25  
+10  30 interval 5
+
+photos souche claire = 200 ISO vitesse 360
+photos souche foncée = 400 ISO 160

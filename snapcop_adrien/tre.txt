@@ -1,0 +1,3 @@
+sudo gphoto2 --capture-image-and-download --interval 10 --frames 20
+
+exiftool '-FileName=Test_0%-c.%e' *.jpg
