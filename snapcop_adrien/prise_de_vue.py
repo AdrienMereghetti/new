@@ -12,8 +12,12 @@ i = 1
 shoot_nb = 1
 image_fs = 'Final_%i' % shoot_nb
 interval = 10
-frames = 5
-comment = 'Test_%i' % shoot_nb
+frames = 1
+photos_name = 'O26_'
+
+souche = 'Capuchon clé USB'
+mycelium = 0
+spore = 0
 
 pygame.font.init()
 pygame.joystick.init()
@@ -24,6 +28,7 @@ screen = pygame.display.get_surface()
 
 exit_loop1 = 'no'
 exit_loop2 = 'no'
+exit_loop3 = 'no'
 cmd3 = 'rm -rf %s' % dossier_name
 
 try:
@@ -66,6 +71,28 @@ def afficherText2l(i, j, x, y, z):
     screen.blit(text, textpos)
     screen.blit(text2, text2pos)
     pygame.display.flip()
+    
+def indicateur():
+    background = pygame.Surface(screen.get_size())
+    background = background.convert()
+    background.fill((255, 255, 255))
+    font = pygame.font.Font(None, 30)
+    text = font.render(('Codification souche : %s' % souche), 1, (255, 0, 255))
+    text2 = font.render(('Nombre de spore : %s' % spore), 1, (255, 0, 255))
+    text3 = font.render(('Surface du mycelium %s' % mycelium), 1, (255, 0, 255))
+    textpos = text.get_rect()
+    textpos.centerx = background.get_rect().centerx
+    textpos.centery = background.get_rect().centery + 325
+    text2pos = text.get_rect()
+    text2pos.centerx = background.get_rect().centerx
+    text2pos.centery = background.get_rect().centery + 350
+    text3pos = text.get_rect()
+    text3pos.centerx = background.get_rect().centerx
+    text3pos.centery = background.get_rect().centery + 375
+    screen.blit(background, (0, 0))
+    screen.blit(text, textpos)
+    screen.blit(text2, text2pos)
+    screen.blit(text3, text3pos)
 
 try:
     stick = pygame.joystick.Joystick(0)
@@ -116,6 +143,39 @@ while exit_loop2 != 'yes':
                     exit_loop2 = 'yes'  
             else:
                 pass
+
+#Choix nombre de photos a prendre
+while exit_loop3 != 'yes': 
+    choix3 = afficherText2l("Combien de photos souhaitez -vous prendre?", "Bouton joystick :5=5 6=10 7=15 8=20 9=25 10=30", 255, 0, 255) 
+    print choix3
+    evts = pygame.event.get()
+    if len(evts) > 0:
+        for evt in evts:
+            if evt.type == pygame.locals.JOYBUTTONDOWN:
+                i = evt.button
+                frames = ((i-3)*5)
+                      
+                if frames == -15:
+                    frames = 1
+                    nb_frames = afficherText(("Vous avez choisi de prendre 1 photos"), 255, 0, 255) 
+                    print nb_frames
+                    time.sleep(2)
+                    exit_loop3 = 'yes'        
+                if frames >=5 and frames <=30:
+                    nb_frames = afficherText(("Vous avez choisi de prendre %i photos" % frames), 255, 0, 255) 
+                    print nb_frames
+                    time.sleep(2)
+                    exit_loop3 = 'yes'
+                if evt.button == 11:
+                    exit = afficherText("Fin du programme", 255, 0, 255)
+                    print exit
+                    time.sleep(2)
+                    exit()
+                else:
+                    pass
+                
+            else:
+                pass
 #Prise de vue
 for a in range(0, 4):
     j = '.' * a
@@ -124,11 +184,12 @@ for a in range(0, 4):
     time.sleep(0.5)
     
 for i in range(0, frames):
-    filename = 'Test_%s-%i.jpg' % (shoot_nb, i)
+    filename = '%s%i-%i.jpg' % (photos_name, shoot_nb, i)
     cmd = 'sudo gphoto2 --capture-image-and-download --force-overwrite --filename %s && sudo mv %s %s' % (filename, filename, dossier)
-    subprocess.check_output(cmd, shell=True)
     shooting = afficherText(("Photos prisent : %i/%i" % (i+1, frames)), 255, 0, 255) 
     print shooting
+    subprocess.check_output(cmd, shell=True)
+    
 
 for a in range(0, 4):
     j = '.' * a
@@ -137,7 +198,7 @@ for a in range(0, 4):
     time.sleep(0.5)    
 
 #Réduit la résolution et la qualité de toutes les photos du dossier shoot
-cmd = 'cd %s; for i in Test_%i*.jpg; do convert -quality 50 -resize 800x600 "$i" "%s/$i"; done && mv %s ..' % (dossier, shoot_nb, dossier_name, dossier_name)
+cmd = 'cd %s; for i in %s%i*.jpg; do convert -quality 50 -resize 800x600 "$i" "%s/$i"; done && cp -R %s .. && rm -rf %s' % (dossier, photos_name, shoot_nb, dossier_name, dossier_name, dossier_name)
 subprocess.check_output(cmd, shell=True)
 '''try:
     shutil.move('%s ..' % dossier_name)
@@ -159,36 +220,36 @@ if choix == 'm':
                     if evt.value[0] == -1 and evt.value[1] == 0:
                         if i >1:
                             i -= 1
-                            image_name = 'Test_%i-%i.jpg' % (shoot_nb, i)
+                            image_name = '%s%i-%i.jpg' % (photos_name, shoot_nb, i)
                         else:
-                            image_name = 'Test_%i.jpg' % shoot_nb
+                            image_name = '%s%i.jpg' % (photos_name, shoot_nb)
                             
                     elif evt.value[0] == 1 and evt.value[1] == 0:
                         if i <(frames-1):
                             i += 1
-                            image_name = 'Test_%i-%i.jpg' % (shoot_nb, i)
+                            image_name = '%s%i-%i.jpg' % (photos_name, shoot_nb, i)
                         else:
                             i = (frames-1)
-                            image_name = '%s%i.jpg' % (image_fs, shoot_nb)
+                            image_name = '%s%i.jpg' % (photos_name, image_fs, shoot_nb)
                         
                         
                     elif evt.value[0] == 0 and evt.value[1] == 1:
                         if shoot_nb >3:
                             shoot_nb -= 1
-                            image_name = 'Test_%i-%i.jpg' % (shoot_nb, i)
+                            image_name = '%s%i-%i.jpg' % (photos_name, shoot_nb, i)
                         else:
-                            image_name = 'Test_%i.jpg' % shoot_nb
+                            image_name = '%s%i.jpg' % (photos_name, shoot_nb)
                             
                     elif evt.value[0] == 0 and evt.value[1] == -1:
                         if shoot_nb <4:
                             shoot_nb += 1
-                            image_name = 'Test_%i-%i.jpg' % (shoot_nb, i)
+                            image_name = '%s%i-%i.jpg' % (photos_name, shoot_nb, i)
                         else:
                             shoot_nb = 4
-                            image_name = '%s%i.jpg' % (image_fs, shoot_nb)
+                            image_name = '%s%i.jpg' % (photos_name, image_fs, shoot_nb)
                         
                     else:
-                        image_name = 'Test_%i-%i.jpg' % (shoot_nb, i)
+                        image_name = '%s%i-%i.jpg' % (shoot_nb, i)
                     image = pygame.image.load('%s/%s' % (dossier_name, image_name))
                     screen.blit(image, (0,0))
                     pygame.display.update()
@@ -215,12 +276,8 @@ if choix == 'm':
 #Défilement automatique des photos
 elif choix == 'a':
     while True:
-        '''image = pygame.image.load('%s/Test_%i.jpg' % (dossier_name, shoot_nb))
-        screen.blit(image, (0,0))
-        pygame.display.update()
-        time.sleep(0.3)'''
         for i in range(0,(frames)):
-            image_name = 'Test_%i-%i.jpg' % (shoot_nb, i)
+            image_name = '%s%i-%i.jpg' % (photos_name, shoot_nb, i)
             image = pygame.image.load('%s/%s' % (dossier_name, image_name))
             screen.blit(image, (0,0))
             pygame.display.update()
@@ -238,6 +295,7 @@ elif choix == 'a':
                         else: 
                             pass
         final = pygame.image.load(('%s/%s.jpg') % (dossier_name, image_fs))
+        indicateur()
         screen.blit(final, (0,0))
         pygame.display.update()
         time.sleep(2)
