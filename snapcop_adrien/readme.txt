@@ -1,4 +1,4 @@
-Messages redis
+èèMessages redis
 =====================
 
 Identification de la prise de vue:
