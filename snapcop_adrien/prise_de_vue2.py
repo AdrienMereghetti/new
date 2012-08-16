@@ -5,6 +5,8 @@ import sys, os, time, subprocess
 import pygame
 from pygame.locals import *
 
+os.environ['SDL_VIDEO_CENTERED'] = '1'
+
 day = time.strftime("%d-%m-%Y", time.localtime())
 dossier = 'shoot-%s' % day
 dossier_name = 'rendu-%s' % day
@@ -246,21 +248,24 @@ if choix == 'm':
                         
                         
                     elif evt.value[0] == 0 and evt.value[1] == 1:
-                        if shoot_nb >3:
+                        if shoot_nb > 0:
                             shoot_nb -= 1
+                            serie = 'serie%i' % shoot_nb
                             image_name = '%s%i-%i.jpg' % (photos_name, shoot_nb, i)
                         else:
-                            image_name = '%s%i.jpg' % (photos_name, shoot_nb)
+                            image_name = '%s%i-0.jpg' % (photos_name, shoot_nb)
                             
                     elif evt.value[0] == 0 and evt.value[1] == -1:
-                        if shoot_nb <4:
-                            shoot_nb += 1
-                            image_name = '%s%i-%i.jpg' % (photos_name, shoot_nb, i)
-                        else:
-                            shoot_nb = 4
-                            image_name = '%s.jpg' % (image_fs)
+                        try:
+                            os.path.exists('/media/snapcop/new/snapcop_adrien/rendu-16-08-2012/%s' % (shoot_nb + 1))
+                        except:
+                            pass
+                        shoot_nb += 1
+                        serie = 'serie%i' % shoot_nb
+                        image_name = '%s%i-%i.jpg' % (photos_name, shoot_nb, i)
                         
                     else:
+                    
                         image_name = '%s%s-%i.jpg' % (photos_name, shoot_nb, i)
                     image = pygame.image.load('%s/%s/%s' % (dossier_name, serie, image_name))
                     screen.blit(image, (0,0))
