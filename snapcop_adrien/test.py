@@ -6,5 +6,14 @@ from pygame.locals import *
 pygame.display.init()
 pygame.joystick.init()
 
-cmd = 'mkdir output; for i in *.jpg; do convert -resize 800x600 -quality 50 "$i" "output/$i"; done'
-subprocess.check_output(cmd, shell=True)
+day = time.strftime("%d-%m-%Y", time.localtime())
+dossier = 'shoot-%s' % day
+dossier_name = 'rendu-%s' % day
+shoot_nb = 0
+
+exist = os.path.exists('/media/snapcop/new/snapcop_adrien/rendu-17-08-2012/')
+
+print type(exist)
+
+
+
