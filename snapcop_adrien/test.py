@@ -1,19 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import usb, sys, os, time, subprocess
-import pygame
-from pygame.locals import *
-pygame.display.init()
-pygame.joystick.init()
+from wand.image import Image
+from wand.display import display
 
-day = time.strftime("%d-%m-%Y", time.localtime())
-dossier = 'shoot-%s' % day
-dossier_name = 'rendu-%s' % day
-shoot_nb = 0
-
-exist = os.path.exists('/media/snapcop/new/snapcop_adrien/rendu-17-08-2012/')
-
-print type(exist)
-
-
-
+with Image(filename='O26_9-0.jpg') as img:
+    print img.size
+    with img.clone() as i:
+        i.resize((800), (600))
+        i.save(filename='O26_9-0.jpg')
+        display(i)

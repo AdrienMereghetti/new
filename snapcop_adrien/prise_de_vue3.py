@@ -1,9 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-import sys, os, time, subprocess
+import os
+import piggyphoto
 import pygame
-from pygame.locals import *
+import pygame.locals
+import shutil
+import time
+import subprocess
+import sys
+from wand.image import Image
+
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
@@ -13,12 +19,9 @@ dossier_name = 'rendu-%s' % day
 i = 0
 shoot_nb = 0
 image_fs = 'Final_'
-interval = 10
+interval = 0
 frames = 1
 photos_name = 'O26_'
-
-
-
 
 souche = 'Capuchon clef USB'
 mycelium = '~0'
@@ -38,13 +41,16 @@ exit_loop2 = 'no'
 exit_loop3 = 'no'
 cmd3 = 'rm -rf %s' % dossier_name
 
+camera = piggyphoto.camera()
+camera.leave_locked()
+
 try:
     os.mkdir(dossier)
 except:
     pass
     
 try:
-    os.mkdir('%s/%s' % (dossier, dossier_name))
+    os.mkdir(dossier_name)
 except:
     pass
 
@@ -139,10 +145,9 @@ try:
 except:
     pass
 try:
-    os.mkdir('%s/%s/%s' % (dossier, dossier_name, serie))
+    os.mkdir('%s/%s' % (dossier_name, serie))
 except:
-    pass
-                
+    pass  
 #Choix du défilement auto ou manuel des photos
 while exit_loop2 != 'yes': 
     choix2 = afficherText2l("Voulez-vous un defilement automatique(a)", "ou manuel(m) des photos ?", 255, 0, 255) 
@@ -208,28 +213,38 @@ for a in range(0, 4):
     time.sleep(0.5)
     
 for i in range(0, frames):
+    
+    
+    
     filename = '%s%i-%i.jpg' % (photos_name, shoot_nb, i)
-    cmd1 = 'sudo gphoto2 --capture-image-and-download --force-overwrite --filename %s && sudo mv %s %s/%s' % (filename, filename, dossier, serie) 
-    subprocess.check_output(cmd1, shell=True)
-    cmd2 = 'cd %s/%s; convert -quality 50 -resize 800x600 %s ../%s/%s/%s; done' % (dossier, serie, filename, dossier_name, serie, filename)
-    subprocess.check_output(cmd2, shell=True)
+    
+    source_capture = filename
+    camera.capture_image(source_capture)
+    dest_capture = ('%s/%s' % (dossier, serie))
+    
+    shutil.move(source_capture, dest_capture)
+
+    with Image(filename='%s/%s' % (dest_capture, filename)) as img:
+            with img.clone() as j:
+                j.resize((800), (600))              
+                j.save(filename='%s/%s/%s' % (dossier_name, serie, filename))
+
     
     afficherText(("Photos prisent : %i/%i" % (i+1, frames)), 255, 0, 255, 0)
     time.sleep(0.5)
     image_name = '%s%s-%i.jpg' % (photos_name, shoot_nb, i)
-    image = pygame.image.load('%s/%s/%s/%s' % (dossier, dossier_name, serie, image_name))
+    image = pygame.image.load('%s/%s/%s' % (dossier_name, serie, image_name))
     screen.blit(image, (0,0))
     pygame.display.update()
-    
-
-cmd3 = 'cd %s/%s && cp -R ../%s ../.. && rm -rf ../%s' % (dossier, serie, dossier_name, dossier_name)
-subprocess.check_output(cmd3, shell=True)
+    time.sleep(interval)
 
 for a in range(0, 4):
     j = '.' * a
     chargement = afficherText(("Chargement %s" % j), 255, 0, 255, 0) 
     print chargement
     time.sleep(0.5) 
+
+camera.exit()
 
 #Stack les photos basse qualité pour un rendu rapide
 cmd2 = 'enfuse -o %s%i.jpg --exposure-weight=1 --saturation-weight=0.1 --contrast-weight=1 --exposure-sigma=0 --exposure-mu=1 --gray-projector=l-star --hard-mask %s/%s/*.jpg && mv %s%i.jpg %s/%s' % (image_fs, shoot_nb, dossier_name, serie, image_fs, shoot_nb, dossier_name, serie)
