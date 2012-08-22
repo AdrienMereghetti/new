@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import config
 import os
 import piggyphoto
 import pygame
@@ -14,16 +15,9 @@ from wand.image import Image
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 day = time.strftime("%d-%m-%Y", time.localtime())
-dossier = 'shoot-%s' % day
-dossier_name = 'rendu-%s' % day
 i = 0
 shoot_nb = 0
-image_fs = 'Final_'
-interval = 4
 frames = 1
-photos_name = 'O26_'
-
-souche = 'Capuchon clef USB'
 mycelium = '~0'
 spore = '~0'
 
@@ -39,18 +33,17 @@ background = background.convert()
 exit_loop1 = 'no'
 exit_loop2 = 'no'
 exit_loop3 = 'no'
-cmd3 = 'rm -rf %s' % dossier_name
 
 camera = piggyphoto.camera()
 camera.leave_locked()
 
 try:
-    os.mkdir(dossier)
+    os.mkdir(config.dossier)
 except:
     pass
     
 try:
-    os.mkdir(dossier_name)
+    os.mkdir(config.dossier_name)
 except:
     pass
 
@@ -87,7 +80,7 @@ def afficherText2l(i, j, x, y, z):
 def indicateur(photo):
     background.fill((255, 255, 255))
     font = pygame.font.Font(None, 30)
-    text = font.render(('Codification souche : %s' % souche), 1, (255, 0, 255))
+    text = font.render(('Codification souche : %s' % config.souche), 1, (255, 0, 255))
     text2 = font.render(('Nombre de spore : %s' % spore), 1, (255, 0, 255))
     text3 = font.render(('Surface du mycelium %s' % mycelium), 1, (255, 0, 255))
     text4 = font.render(('Serie n : %s' % shoot_nb), 1, (255, 0, 255))
@@ -141,11 +134,11 @@ while exit_loop1 != 'yes':
                     exit_loop1 = 'yes'
 
 try:
-    os.mkdir('%s/%s' % (dossier, serie))
+    os.mkdir('%s/%s' % (config.dossier, serie))
 except:
     pass
 try:
-    os.mkdir('%s/%s' % (dossier_name, serie))
+    os.mkdir('%s/%s' % (config.dossier_name, serie))
 except:
     pass  
 #Choix du défilement auto ou manuel des photos
@@ -216,27 +209,27 @@ for i in range(0, frames):
     
     
     
-    filename = '%s%i-%i.jpg' % (photos_name, shoot_nb, i)
+    filename = '%s%i-%i.jpg' % (config.photos_name, shoot_nb, i)
     
     source_capture = filename
     camera.capture_image(source_capture)
-    dest_capture = ('%s/%s' % (dossier, serie))
+    dest_capture = ('%s/%s' % (config.dossier, serie))
     
     shutil.move(source_capture, dest_capture)
 
     with Image(filename='%s/%s' % (dest_capture, filename)) as img:
             with img.clone() as j:
                 j.resize((800), (600))              
-                j.save(filename='%s/%s/%s' % (dossier_name, serie, filename))
+                j.save(filename='%s/%s/%s' % (config.dossier_name, serie, filename))
 
     
     afficherText(("Photos prisent : %i/%i" % (i+1, frames)), 255, 0, 255, 0)
     time.sleep(0.5)
-    image_name = '%s%s-%i.jpg' % (photos_name, shoot_nb, i)
-    image = pygame.image.load('%s/%s/%s' % (dossier_name, serie, image_name))
+    image_name = '%s%s-%i.jpg' % (config.photos_name, shoot_nb, i)
+    image = pygame.image.load('%s/%s/%s' % (config.dossier_name, serie, image_name))
     screen.blit(image, (0,0))
     pygame.display.update()
-    time.sleep(interval)
+    time.sleep(config.interval)
 
 for a in range(0, 4):
     j = '.' * a
@@ -247,7 +240,7 @@ for a in range(0, 4):
 camera.exit()
 
 #Stack les photos basse qualité pour un rendu rapide
-cmd2 = 'enfuse -o %s%i.jpg --exposure-weight=1 --saturation-weight=0.1 --contrast-weight=1 --exposure-sigma=0 --exposure-mu=1 --gray-projector=l-star --hard-mask %s/%s/*.jpg && mv %s%i.jpg %s/%s' % (image_fs, shoot_nb, dossier_name, serie, image_fs, shoot_nb, dossier_name, serie)
+cmd2 = 'enfuse -o %s%i.jpg --exposure-weight=1 --saturation-weight=0.1 --contrast-weight=1 --exposure-sigma=0 --exposure-mu=1 --gray-projector=l-star --hard-mask %s/%s/*.jpg && mv %s%i.jpg %s/%s' % (config.image_fs, shoot_nb, config.dossier_name, serie, config.image_fs, shoot_nb, config.dossier_name, serie)
 subprocess.check_output(cmd2, shell=True)
 #Defilement manuel des photos
 i = 0
@@ -263,52 +256,52 @@ if choix == 'm':
                     if evt.value[0] == -1 and evt.value[1] == 0:
                         if i >0:
                             i -= 1
-                            image_name = '%s%i-%i.jpg' % (photos_name, shoot_nb, i)
+                            image_name = '%s%i-%i.jpg' % (config.photos_name, shoot_nb, i)
                         else:
-                            image_name = '%s%i-0.jpg' % (photos_name, shoot_nb)
+                            image_name = '%s%i-0.jpg' % (config.photos_name, shoot_nb)
                             
                     elif evt.value[0] == 1 and evt.value[1] == 0:
                         if i <(frames-1):
                             i += 1
-                            image_name = '%s%i-%i.jpg' % (photos_name, shoot_nb, i)
+                            image_name = '%s%i-%i.jpg' % (config.photos_name, shoot_nb, i)
                         else:
       
                             i = (frames-1)
-                            image_name = '%s%i.jpg' % (image_fs, shoot_nb)
+                            image_name = '%s%i.jpg' % (config.image_fs, shoot_nb)
                         
                     elif evt.value[0] == 0 and evt.value[1] == 1:
                         if shoot_nb > 0:
                             shoot_nb -= 1
                             serie = 'serie%i' % shoot_nb
-                            image_name = '%s%i-%i.jpg' % (photos_name, shoot_nb, i)
+                            image_name = '%s%i-%i.jpg' % (config.photos_name, shoot_nb, i)
                         else:
-                            image_name = '%s%i-0.jpg' % (photos_name, shoot_nb)
+                            image_name = '%s%i-0.jpg' % (config.photos_name, shoot_nb)
                             
                     elif evt.value[0] == 0 and evt.value[1] == -1:
-                        exist = os.path.exists('/media/snapcop/new/snapcop_adrien/%s/%s' % ((dossier_name, 'serie%i'% (shoot_nb + 1))))
+                        exist = os.path.exists('/media/snapcop/new/snapcop_adrien/%s/%s' % ((config.dossier_name, 'serie%i'% (shoot_nb + 1))))
                         if exist:
                             shoot_nb += 1
                             serie = 'serie%i' % shoot_nb
-                            image_name = '%s%i-%i.jpg' % (photos_name, shoot_nb, i)
+                            image_name = '%s%i-%i.jpg' % (config.photos_name, shoot_nb, i)
                         else:
                             serie = 'serie%i' % shoot_nb
-                            image_name = '%s%i-%i.jpg' % (photos_name, shoot_nb, i)
+                            image_name = '%s%i-%i.jpg' % (config.photos_name, shoot_nb, i)
                         
                         
                     else:
                     
-                        image_name = '%s%s-%i.jpg' % (photos_name, shoot_nb, i)
-                    image = pygame.image.load('%s/%s/%s' % (dossier_name, serie, image_name))
-                    indicateur(('Photo : %s%i-%i' % (photos_name, shoot_nb, i)))
+                        image_name = '%s%s-%i.jpg' % (config.photos_name, shoot_nb, i)
+                    image = pygame.image.load('%s/%s/%s' % (config.dossier_name, serie, image_name))
+                    indicateur(('Photo : %s%i-%i' % (config.photos_name, shoot_nb, i)))
                     screen.blit(image, (0,0))
                     pygame.display.update()
                     time.sleep(0.3)
                 
                 if evt.type == pygame.locals.JOYBUTTONDOWN:
                     if evt.button == 1:
-                        image_name = '%s%i.jpg' % (image_fs, shoot_nb)
-                        indicateur('Photo : %s%i' % (image_fs, shoot_nb))
-                        image = pygame.image.load('%s/%s/%s' % (dossier_name, serie, image_name))
+                        image_name = '%s%i.jpg' % (config.image_fs, shoot_nb)
+                        indicateur('Photo : %s%i' % (config.image_fs, shoot_nb))
+                        image = pygame.image.load('%s/%s/%s' % (config.dossier_name, serie, image_name))
                         screen.blit(image, (0,0))
                         pygame.display.update()
                 
@@ -327,9 +320,9 @@ if choix == 'm':
 elif choix == 'a':
     while True:
         for i in range(0,(frames)):
-            image_name = '%s%i-%i.jpg' % (photos_name, shoot_nb, i)
-            image = pygame.image.load('%s/%s/%s' % (dossier_name, serie, image_name))
-            indicateur('Photo : %s%i-%i' % (photos_name, shoot_nb, i))
+            image_name = '%s%i-%i.jpg' % (config.photos_name, shoot_nb, i)
+            image = pygame.image.load('%s/%s/%s' % (config.dossier_name, serie, image_name))
+            indicateur('Photo : %s%i-%i' % (config.photos_name, shoot_nb, i))
             screen.blit(image, (0,0))
             pygame.display.update()
             time.sleep(0.5)
@@ -344,8 +337,8 @@ elif choix == 'a':
                             exit()
                         else: 
                             pass
-        final = pygame.image.load(('%s/%s/%s%i.jpg') % (dossier_name, serie, image_fs, shoot_nb))
-        indicateur('Photo : %s%i' % (image_fs, shoot_nb))
+        final = pygame.image.load(('%s/%s/%s%i.jpg') % (config.dossier_name, serie, config.image_fs, shoot_nb))
+        indicateur('Photo : %s%i' % (config.image_fs, shoot_nb))
         screen.blit(final, (0,0))
         pygame.display.update()
         background.fill((255, 255, 255))

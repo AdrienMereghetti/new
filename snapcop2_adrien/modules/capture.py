@@ -15,7 +15,7 @@ from wand.display import display
 
 pygame.joystick.init()
 pygame.display.init()
-window = pygame.display.set_mode((800, 600)) 
+window = pygame.display.set_mode((1056, 704)) 
 pygame.display.set_caption('Display Preview')
 screen = pygame.display.get_surface()
 
@@ -28,18 +28,18 @@ def main():
     
     stop = False
     while not stop:    
-        time.sleep(0.3)
+        #time.sleep(0.3)
         print time.time(), 'capture preview ...'
         camera.capture_preview('data/preview.jpg')
-        with Image(filename='data/preview.jpg') as img:
+        '''with Image(filename='data/preview.jpg') as img:
             with img.clone() as i:
                 i.resize((800), (600))
-                i.save(filename='data/preview.jpg')      
+                i.save(filename='data/preview.jpg')'''      
         preview = pygame.image.load('data/preview.jpg')
         screen.blit(preview, (0, 0))
         pygame.display.update()
         
-        cx.publish('preview', '')
+        #cx.publish('preview', '')
         
         
         evts = pygame.event.get()
@@ -71,15 +71,15 @@ def main():
                     try:
                         pyexiv2.xmp.register_namespace('Souche/', 'Souche')
                     except:
-                        print 'namespace Souche exist'
+                        pass
                     try: 
                         pyexiv2.xmp.register_namespace('Auteur/', 'Auteur')
                     except:
-                        print 'namespace Auteur exist'
+                        pass
                     try:
                         pyexiv2.xmp.register_namespace('Description/', 'Description')
                     except:
-                        print 'namespace Description exist'
+                        pass
                     metadata['Xmp.Souche.Souche'] = souche
                     metadata['Xmp.Auteur.Auteur'] = auteur
                     metadata['Xmp.Description.Description'] = desc

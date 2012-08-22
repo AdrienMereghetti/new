@@ -18,7 +18,7 @@ def main(lent):
         print cx.lrange('captures', -5, -1)
         
         # execution de stack
-        #time.sleep(5)
+        time.sleep(5)
         
         # publication stacking terminé
         cx.publish('stacking', 'done')
