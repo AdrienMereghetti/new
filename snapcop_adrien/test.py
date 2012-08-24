@@ -1,12 +1,30 @@
 # -*- coding: utf-8 -*-
 
-import usb, sys, os, time, subprocess
-from wand.image import Image
-from wand.display import display
+import usb, pygame, sys, os, time, subprocess
+import pygame.locals
 
-with Image(filename='O26_9-0.jpg') as img:
-    print img.size
-    with img.clone() as i:
-        i.resize((800), (600))
-        i.save(filename='O26_9-0.jpg')
-        display(i)
+pygame.display.init()
+window = pygame.display.set_mode((800, 800)) 
+pygame.display.set_caption('Visu photo stacker')
+screen = pygame.display.get_surface()
+
+shoot_nb = ''
+loop = False
+while not loop:
+            
+    evts = pygame.event.get()
+    if len(evts) > 0:
+        for evt in evts:
+            if evt.type == pygame.locals.KEYDOWN:
+                if evt.key == 27:
+                    exit = afficherText("Fin du programme", 255, 0, 255, 0)
+                    print exit
+                    time.sleep(2)
+                    exit()
+                    
+                elif evt.key == 13:
+                    loop = True
+                else:
+                    shoot_nb += '%s' % evt.unicode
+                    print shoot_nb
+    
