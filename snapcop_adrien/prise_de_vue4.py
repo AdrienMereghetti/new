@@ -126,9 +126,10 @@ except:
     sys.exit()
 
 #Choix du numéro de shoot
+choix1 = afficherText("Indiquez le numero du shoot a l'aide du clavier numerique", 255, 0, 255, 0)
+print choix1
 while exit_loop1 != 'yes': 
-    choix1 = afficherText("Indiquez le numero du shoot a l'aide du clavier numerique", 255, 0, 255, 0)
-    print choix1
+    
     evts = pygame.event.get()
     if len(evts) > 0:
         for evt in evts:
@@ -143,11 +144,17 @@ while exit_loop1 != 'yes':
                     shoot_nb = int(shoot_nb)
                     serie = 'serie%i' % shoot_nb
                     exit_loop1 = 'yes'
+                    
+                elif evt.key == 8:
+                    shoot_nb = shoot_nb[:-1]
+                    shoot = afficherText('Shoot numero %s'%shoot_nb, 255, 0, 255, 0)
+                    print shoot
+                
                 else:
                     shoot_nb += '%s' % evt.unicode
-                    shoot = afficherText(shoot_nb, 255, 0, 255, 0)
+                    shoot = afficherText('Shoot numero %i'%int(shoot_nb), 255, 0, 255, 0)
                     print shoot
-                    print shoot_nb
+                    shoot_nb = str(shoot_nb)
 
 try:
     os.mkdir('%s/%s' % (config.dossier, serie))
@@ -219,7 +226,7 @@ for a in range(0, 4):
     j = '.' * a
     shooting = afficherText(("Prise de vue en cour %s" % j), 255, 0, 255, 0) 
     print shooting
-    time.sleep(0.5)
+    time.sleep(0.3)
     
 for i in range(0, frames):
     
@@ -246,11 +253,18 @@ for i in range(0, frames):
     pygame.display.update()
     time.sleep(config.interval)
 
+    for evt in evts:
+        if evt.type == pygame.locals.KEYDOWN:
+            if evt.key == 27:
+                exit = afficherText("Fin du programme", 255, 0, 255, 0)
+                print exit
+                time.sleep(2)
+                exit()
 for a in range(0, 4):
     j = '.' * a
     chargement = afficherText(("Chargement %s" % j), 255, 0, 255, 0) 
     print chargement
-    time.sleep(0.5) 
+    time.sleep(0.3) 
 
 camera.exit()
 
