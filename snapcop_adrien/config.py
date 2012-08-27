@@ -1,21 +1,11 @@
 # -*- coding: utf-8 -*-
-import time
+import time, redis
 day = time.strftime("%d-%m-%Y", time.localtime())
+cx = redis.Redis()
 
-#Nom du dossier des photos "lourdes"
-dossier = 'shoot-%s' % day
-
-#Nom du dossier des photos compressé
-dossier_name = 'rendu-%s' % day
-
-#Nom de la photo stacké
-image_fs = 'Final_'
-
-#Interval de temps entre 2 prises de vue
-interval = 4
-
-#Noms des photos
-photos_name = 'O26_'
-
-#Nom de la souche 
-souche = 'Capuchon clef USB'
+dossier = '%s-%s' % ((str(cx.get('dossier'))), day)
+dossier_name = '%s-%s' % ((str(cx.get('dossier_name'))), day)
+image_fs = '%s_'%(str(cx.get('image_fs')))
+interval = int(cx.get('interval'))
+photos_name = '%s_'%str(cx.get('photos_name'))
+souche = str(cx.get('souche'))

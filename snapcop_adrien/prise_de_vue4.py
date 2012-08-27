@@ -16,7 +16,7 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 day = time.strftime("%d-%m-%Y", time.localtime())
 i = 0
-shoot_nb = 0
+shoot_nb = ''
 frames = 1
 mycelium = '~0'
 spore = '~0'
@@ -56,6 +56,16 @@ def afficherText(i, x, y, z, pos):
     textpos.centerx = background.get_rect().centerx
     textpos.centery = background.get_rect().centery + pos
     screen.blit(background, (0, 0))
+    screen.blit(text, textpos)
+    pygame.display.flip()
+
+def afficherPDV(i, x, y, z, pos):
+    background.fill((255, 255, 255))
+    font = pygame.font.Font(None, 36)
+    text = font.render(i, 1, (x, y, z))
+    textpos = text.get_rect()
+    textpos.centerx = background.get_rect().centerx
+    textpos.centery = background.get_rect().centery + pos
     screen.blit(text, textpos)
     pygame.display.flip()
 
@@ -128,10 +138,16 @@ while exit_loop1 != 'yes':
                     print exit
                     time.sleep(2)
                     exit()
-                else:
-                    shoot_nb = int(evt.unicode)
-                    serie = 'serie%s' % shoot_nb
+                    
+                elif evt.key == 13:
+                    shoot_nb = int(shoot_nb)
+                    serie = 'serie%i' % shoot_nb
                     exit_loop1 = 'yes'
+                else:
+                    shoot_nb += '%s' % evt.unicode
+                    shoot = afficherText(shoot_nb, 255, 0, 255, 0)
+                    print shoot
+                    print shoot_nb
 
 try:
     os.mkdir('%s/%s' % (config.dossier, serie))
@@ -222,12 +238,11 @@ for i in range(0, frames):
                 j.resize((800), (600))              
                 j.save(filename='%s/%s/%s' % (config.dossier_name, serie, filename))
 
-    
-    afficherText(("Photos prisent : %i/%i" % (i+1, frames)), 255, 0, 255, 0)
-    time.sleep(0.5)
     image_name = '%s%s-%i.jpg' % (config.photos_name, shoot_nb, i)
     image = pygame.image.load('%s/%s/%s' % (config.dossier_name, serie, image_name))
+    screen.blit(background, (0, 0))
     screen.blit(image, (0,0))
+    afficherPDV(("Photos prisent : %i/%i" % (i+1, frames)), 255, 0, 255, 300)
     pygame.display.update()
     time.sleep(config.interval)
 

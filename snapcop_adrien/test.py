@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import usb, pygame, sys, os, time, subprocess
+import usb,redis,  pygame, sys, os, time, subprocess
 import pygame.locals
 
 pygame.display.init()
@@ -10,7 +10,10 @@ screen = pygame.display.get_surface()
 
 shoot_nb = ''
 loop = False
-while not loop:
+
+cx = redis.Redis()
+cx.publish('shoot', '-1')
+'''while not loop:
             
     evts = pygame.event.get()
     if len(evts) > 0:
@@ -26,5 +29,4 @@ while not loop:
                     loop = True
                 else:
                     shoot_nb += '%s' % evt.unicode
-                    print shoot_nb
-    
+                    print shoot_nb'''
