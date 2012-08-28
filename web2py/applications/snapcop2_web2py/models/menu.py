@@ -6,7 +6,7 @@
 #########################################################################
 
 response.title = ' '.join(word.capitalize() for word in request.application.split('_'))
-response.subtitle = T('customize me!')
+response.subtitle = T('Snapcop2 : Prise de vue Stacking auto')
 
 ## read more at http://dev.w3.org/html5/markup/meta.name.html
 response.meta.author = 'Your Name <you@example.com>'

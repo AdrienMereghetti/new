@@ -106,6 +106,7 @@
 'Rows selected': 'Lignes sélectionnées',
 'Semantic': 'Sémantique',
 'Services': 'Services',
+'Snapcop2 : Prise de vue Stacking auto': 'Snapcop2 : Prise de vue Stacking auto',
 'Stylesheet': 'Feuille de style',
 'Submit': 'Soumettre',
 'Support': 'Support',
