@@ -5,7 +5,7 @@ from pygame.locals import *
 
 pygame.display.init()
 pygame.joystick.init()
-window = pygame.display.set_mode((1600, 600)) 
+window = pygame.display.set_mode((3840, 1080)) 
 pygame.display.set_caption('Visu photo stacker')
 screen = pygame.display.get_surface()
 

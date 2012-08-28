@@ -138,7 +138,7 @@ while exit_loop1 != 'yes':
                     exit = afficherText("Fin du programme", 255, 0, 255, 0)
                     print exit
                     time.sleep(2)
-                    exit()
+                    sys.exit()
                     
                 elif evt.key == 13:
                     shoot_nb = int(shoot_nb)
@@ -182,7 +182,7 @@ while exit_loop2 != 'yes':
                     exit = afficherText("Fin du programme", 255, 0, 255, 0)
                     print exit
                     time.sleep(2)
-                    exit()
+                    sys.exit()
                 else:
                     choix = 'e'      
                     exit_loop2 = 'yes'  
@@ -215,7 +215,7 @@ while exit_loop3 != 'yes':
                     exit = afficherText("Fin du programme", 255, 0, 255, 0)
                     print exit
                     time.sleep(2)
-                    exit()
+                    sys.exit()
                 else:
                     pass
                 
@@ -259,7 +259,7 @@ for i in range(0, frames):
                 exit = afficherText("Fin du programme", 255, 0, 255, 0)
                 print exit
                 time.sleep(2)
-                exit()
+                sys.exit()
 for a in range(0, 4):
     j = '.' * a
     chargement = afficherText(("Chargement %s" % j), 255, 0, 255, 0) 
@@ -339,7 +339,7 @@ if choix == 'm':
                         exit = afficherText("Fin du programme", 255, 0, 255, 0)
                         print exit
                         time.sleep(2)
-                        exit()
+                        sys.exit()
                         
                     
                 
@@ -363,7 +363,7 @@ elif choix == 'a':
                             exit = afficherText("Fin du programme", 255, 0, 255, 0)
                             print exit
                             time.sleep(2)
-                            exit()
+                            sys.exit()
                         else: 
                             pass
         final = pygame.image.load(('%s/%s/%s%i.jpg') % (config.dossier_name, serie, config.image_fs, shoot_nb))
@@ -378,7 +378,7 @@ elif choix == 'e':
     bad = afficherText("Votre choix n'est pas correct ! Relancez le script", 255, 0, 255, 0)
     print bad
     time.sleep(2)
-    exit()
+    sys.exit()
     
 else:
     pass

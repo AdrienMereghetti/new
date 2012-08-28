@@ -55,8 +55,9 @@ def main(lent):
         subprocess.check_output(cmd, shell=True)
         shutil.move('Stack%i.jpg' % shoot_nb, '%s/%s'% (dest_stack, series))
         
+        stack = '%s/%s/Stack%i.jpg' % (dest_stack, series, shoot_nb)
         # publication stacking terminé
-        cx.publish('stacking', 'done')
+        cx.publish('stacking', stack)
         frames = 0
         cx.set('frames', frames)
         print 'Finish !!'
