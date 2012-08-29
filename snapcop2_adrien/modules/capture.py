@@ -8,6 +8,7 @@ import pygame
 import pygame.locals
 import redis
 import shutil
+import sys
 import time
 
 
@@ -48,6 +49,7 @@ def main():
             if evt.type == pygame.locals.KEYDOWN:
                 if evt.key == 27:
                     print "Fin du programme"
+                    cx.publish('exit','sys.exit()')
                     stop = True
                 elif evt.key == 112: # P
                     pass
@@ -76,6 +78,7 @@ def main():
                     frames_raz = 'yes'
                     capt = 'yes'
                 if evt.button == 11:
+                    cx.publish('exit','sys.exit()')
                     sys.exit()
                 if evt.button == 1: # Boutton 2
                     print 'demande de stacking lent ...'

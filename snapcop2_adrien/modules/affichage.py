@@ -7,13 +7,14 @@ import pygame
 import pygame.locals
 import redis
 import shutil
+import sys
 import time
 from wand.image import Image
 from wand.display import display
 
 cx = redis.Redis()
 pubsub = cx.pubsub()  
-pubsub.subscribe(['capture', 'stacking'])
+pubsub.subscribe(['capture', 'stacking', 'exit'])
 pygame.display.init()
 capture_on = False
 stack_on = False
@@ -52,10 +53,12 @@ def preview():
                 stack = m['data']    
                 stack_on = True
                 break
+            if data[:3] == 'sys':
+                sys.exit()
         if capture_on == True:
             c += 1
             nb_photo = int(cx.get('nb_photo'))
-            window = pygame.display.set_mode((1920, 1080)) 
+            window = pygame.display.set_mode((1500, 1000)) 
             pygame.display.set_caption('Capture Preview')
             screen = pygame.display.get_surface()
             evts = pygame.event.get()
@@ -63,7 +66,7 @@ def preview():
                 
             with Image(filename = capture) as img:
                 with img.clone() as i:
-                    i.resize((1920), (1080))
+                    i.resize((1500), (1000))
                     i.save(filename=capture)     
             preview = pygame.image.load(capture)
             screen.blit(preview, (0, 0))
@@ -73,18 +76,14 @@ def preview():
         
         elif stack_on == True:
         
-            window = pygame.display.set_mode((1920, 1080)) 
+            window = pygame.display.set_mode((1500, 1000)) 
             pygame.display.set_caption('Capture Preview')
             screen = pygame.display.get_surface()
             evts = pygame.event.get()
-               
-            with Image(filename = stack) as img:
-                with img.clone() as i:
-                    i.resize((1920), (1080))
-                    i.save(filename=stack)     
             preview = pygame.image.load(stack)
             screen.blit(preview, (0, 0))
             afficherText(("Photos Stack"), 255, 0, 255, 300)
             pygame.display.update()
+            c = 0
             stack_on = False
             

@@ -86,6 +86,7 @@
 'Preface': 'Préface',
 'Prise de vue': 'Prise de vue',
 'Prise de vue Eric': 'Prise de vue Eric',
+'Prise de vue Eric2': 'Prise de vue Eric2',
 'Prises de vue': 'Prises de vue',
 'Prises de vue Eric': 'Prises de vue Eric',
 'Python': 'Python',
