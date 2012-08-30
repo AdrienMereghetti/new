@@ -174,4 +174,5 @@
 'state': 'état',
 'table': 'tableau',
 'unable to parse csv file': "incapable d'analyser le fichier cvs",
+'value not allowed': 'value not allowed',
 }

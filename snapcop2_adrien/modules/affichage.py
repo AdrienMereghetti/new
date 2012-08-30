@@ -10,7 +10,6 @@ import shutil
 import sys
 import time
 from wand.image import Image
-from wand.display import display
 
 cx = redis.Redis()
 pubsub = cx.pubsub()  
@@ -67,11 +66,12 @@ def preview():
             with Image(filename = capture) as img:
                 with img.clone() as i:
                     i.resize((1500), (1000))
-                    i.save(filename=capture)     
-            preview = pygame.image.load(capture)
+                    i.save(filename='%s1'%capture)     
+            preview = pygame.image.load('%s1'%capture)
             screen.blit(preview, (0, 0))
             afficherText(("Photos prisent : %i/%i" % (c, nb_photo)), 255, 0, 255, 300)
             pygame.display.update()
+            os.remove('%s1'%capture)
             capture_on = False
         
         elif stack_on == True:
@@ -80,10 +80,17 @@ def preview():
             pygame.display.set_caption('Capture Preview')
             screen = pygame.display.get_surface()
             evts = pygame.event.get()
-            preview = pygame.image.load(stack)
+            
+            with Image(filename = stack) as img:
+                with img.clone() as i:
+                    i.resize((1500), (1000))
+                    i.save(filename='%s1'%stack)
+            
+            preview = pygame.image.load('%s1'%stack)
             screen.blit(preview, (0, 0))
             afficherText(("Photos Stack"), 255, 0, 255, 300)
             pygame.display.update()
             c = 0
+            os.remove('%s1'%stack)
             stack_on = False
             

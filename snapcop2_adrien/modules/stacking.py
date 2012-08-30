@@ -6,6 +6,7 @@ import redis
 import shutil
 import subprocess
 import time
+from wand.image import Image
 
 
 
@@ -28,7 +29,7 @@ def main(lent):
         frames = int(cx.get('frames'))
         # On récupère les x dernières photos
         serie = cx.lrange('captures', -frames, -1)
-        dest_stack = 'data/stack_lent'
+        dest_stack = 'data/%s' % canal
         
         shoot_nb += 1
         cx.set('shoot', shoot_nb)
@@ -41,6 +42,15 @@ def main(lent):
             
         for i in range(0, frames):
             shutil.copy2(serie[i], '%s/%s'%(dest_stack, series))
+            if canal == 'stack_rapide':
+                image = serie[i]
+                image='%s/%s/%s'%(dest_stack, series, image[-22:])
+                with Image(filename = image) as img:
+                    with img.clone() as i:
+                        i.resize((800), (533))
+                        i.save(filename=image)
+                
+                
         
         
         
