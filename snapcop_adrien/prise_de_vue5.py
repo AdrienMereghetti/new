@@ -63,7 +63,7 @@ def afficherText(i, x, y, z, pos):
     textpos = text.get_rect()
     textpos.centerx = background.get_rect().centerx
     textpos.centery = background.get_rect().centery + pos
-    screen.blit(background, (0, 0))
+    #screen.blit(background, (0, 0))
     screen.blit(text, textpos)
     pygame.display.flip()
 
@@ -154,30 +154,25 @@ while try_serie != 'exit':
         try_serie = try_serie+'it'
           
 #Choix nombre de photos a prendre
+i = 0
+txt0 = afficherText("Combien de photos souhaitez -vous prendre?", 255, 0, 255, -200)
+txt1 = afficherText("1 : 1", 255, 0, 255, -160)
+print txt0, txt1
 while exit_loop1 != 'yes': 
     '''choix3 = afficherText2l("Combien de photos souhaitez -vous prendre?", "Bouton joystick :5=5 6=10 7=15 8=20 9=25 10=30", 255, 0, 255) 
     print choix3'''
-    for i in range(0,8):
-        txt = afficherText("Combien de photos souhaitez -vous prendre?", 255, 0, 255, -200) 
+    i = 0
+    a = 4
+    b = 0
+    c = -160
+    while i != 6:
+        a += 1
+        b += 5
+        c += 40 
+        txt = afficherText(('%i : %i' % (a, b)), 255, 0, 255, c) 
         print txt
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        
+        i +=1
+      
     evts = pygame.event.get()
     if len(evts) > 0:
         for evt in evts:
@@ -190,12 +185,12 @@ while exit_loop1 != 'yes':
                     nb_frames = afficherText(("Vous avez choisi de prendre 1 photos"), 255, 0, 255, 0) 
                     print nb_frames
                     time.sleep(2)
-                    exit_loop3 = 'yes'        
+                    exit_loop1 = 'yes'        
                 if frames >=5 and frames <=30:
                     nb_frames = afficherText(("Vous avez choisi de prendre %i photos" % frames), 255, 0, 255, 0) 
                     print nb_frames
                     time.sleep(2)
-                    exit_loop3 = 'yes'
+                    exit_loop1 = 'yes'
                 if evt.button == 11:
                     exit = afficherText("Fin du programme", 255, 0, 255, 0)
                     print exit

@@ -10,7 +10,7 @@ import redis
 import shutil
 import sys
 import time
-
+from wand.image import Image
 
 pygame.joystick.init()
 pygame.display.init()
@@ -27,6 +27,8 @@ except:
     sys.exit()
 
 def main():
+    a, b = 0, 0
+    zoom = 0
     capt = 'no'
     frames_raz = 'yes'
     camera = piggyphoto.camera()
@@ -38,8 +40,15 @@ def main():
     while not stop:    
         print time.time(), 'capture preview ...'
         camera.capture_preview('data/preview.jpg')      
+        
+        if zoom != 0:
+            with Image(filename = 'data/preview.jpg') as img:
+                with img.clone() as i:
+                    i.resize(x, y)
+                    i.save(filename='data/preview.jpg')
+        
         preview = pygame.image.load('data/preview.jpg')
-        screen.blit(preview, (0, 0))
+        screen.blit(preview, (b, a))
         pygame.display.update()
         
         #cx.publish('preview', '')
@@ -53,14 +62,19 @@ def main():
                     stop = True
                 elif evt.key == 112: # P
                     pass
-                
 
                 elif evt.key == 115: # S
                     print 'demande de stacking rapide ...'
                     cx.publish('stack_rapide', '')
 
-                
-                    
+                elif evt.key == 273: # UP
+                    a -= 10    
+                elif evt.key == 276: # LEFT
+                    b -= 10
+                elif evt.key == 275: # RIGHT
+                    b += 10
+                elif evt.key == 274: # DOWN
+                    a += 10
                 else:
                     print 'touche inconnue ', evt.key
                 
@@ -88,7 +102,30 @@ def main():
                     frames = 0
                 else:
                     pass
-                
+            
+            elif evt.type == pygame.locals.JOYAXISMOTION:
+                if evt.axis == 3:
+                        if evt.value == 1:
+                            zoom = 0 
+                        elif evt.value < 0.9 and evt.value > 0:
+                            zoom = 1
+                            x = 1300
+                            y = 867
+                        elif evt.value == 0:
+                            zoom = 2
+                            x = 1500
+                            y = 1000
+                        elif evt.value < 0 and evt.value > -0.9:
+                            zoom = 3
+                            x = 1700
+                            y = 1133
+                        elif evt.value <= -1:
+                            zoom = 4
+                            x = 1900
+                            y = 1267
+                        else:
+                            pass
+            
             else:
                 pass
         while capt == "yes":
