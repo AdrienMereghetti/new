@@ -1,32 +1,18 @@
 # -*- coding: utf-8 -*-
 
-import usb,redis,  pygame, sys, os, time, subprocess
-import pygame.locals
+import sys, os, time
+from datetime import date
+import datetime
 
-pygame.display.init()
-window = pygame.display.set_mode((800, 800)) 
-pygame.display.set_caption('Visu photo stacker')
-screen = pygame.display.get_surface()
+day = time.strftime("%d-%m-%Y", time.localtime())
+dat ='15-08-2012'  
+'''d0 = date(int(day[6:]), int(day[3:5]), int(dat[:2]))
+d1 = date(int(dat[6:]), int(dat[3:5]), int(dat[:2]))
+delta = d0 - d1
+print delta.days'''
 
-shoot_nb = ''
-loop = False
-
-cx = redis.Redis()
-cx.publish('shoot', '-1')
-'''while not loop:
-            
-    evts = pygame.event.get()
-    if len(evts) > 0:
-        for evt in evts:
-            if evt.type == pygame.locals.KEYDOWN:
-                if evt.key == 27:
-                    exit = afficherText("Fin du programme", 255, 0, 255, 0)
-                    print exit
-                    time.sleep(2)
-                    exit()
-                    
-                elif evt.key == 13:
-                    loop = True
-                else:
-                    shoot_nb += '%s' % evt.unicode
-                    print shoot_nb'''
+a = date(int(day[6:]), int(day[3:5]), int(dat[:2]))
+b = date(int(dat[6:]), int(dat[3:5]), int(dat[:2]))
+delta = a - b
+datetime.timedelta(7)
+print delta.days

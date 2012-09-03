@@ -182,11 +182,15 @@ while exit_loop1 != 'yes':
                       
                 if frames == -15:
                     frames = 1
+                    background.fill((0, 0, 0))
+                    screen.blit(background, (0, 0))
                     nb_frames = afficherText(("Vous avez choisi de prendre 1 photos"), 255, 0, 255, 0) 
                     print nb_frames
                     time.sleep(2)
                     exit_loop1 = 'yes'        
                 if frames >=5 and frames <=30:
+                    background.fill((0, 0, 0))
+                    screen.blit(background, (0, 0))
                     nb_frames = afficherText(("Vous avez choisi de prendre %i photos" % frames), 255, 0, 255, 0) 
                     print nb_frames
                     time.sleep(2)

@@ -99,7 +99,7 @@ def main():
                     frames = 0
                     cx.publish('stack_lent', '')
                 if evt.button == 3: # Boutton 4
-                    frames = 0
+                    cx.publish('envoi', '')
                 else:
                     pass
             
