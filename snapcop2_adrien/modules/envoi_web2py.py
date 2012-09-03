@@ -20,8 +20,11 @@ screen = pygame.display.get_surface()
 def main():
     cx = redis.Redis()
     ps = cx.pubsub()
-    ps.subscribe(['envoi'])
+    ps.subscribe(['envoi', 'exit'])
     for m in ps.listen():
+        data = str(m['data'])
+        if data[:3] == 'sys':
+                sys.exit()
         print 'Envoi!'
         frames = int(cx.get('frames'))
         # On récupère les x dernières photos

@@ -10,6 +10,7 @@
 'Administrative Interface': 'Administrative Interface',
 'Administrative interface': "Interface d'administration",
 'Ajax Recipes': 'Recettes Ajax',
+'Aperçu photos': 'Aperçu photos',
 'Are you sure you want to delete this object?': 'Êtes-vous sûr de vouloir supprimer cet objet?',
 'Authentication': 'Authentification',
 'Available databases and tables': 'Bases de données et tables disponibles',

@@ -12,4 +12,11 @@ def thumb():
         A(IMG(_src=URL('static/Photos', 'thumb%s'%photo[-18:]), _alt="Capt"),
                   _href=URL('static/Photos', photo[-22:])),
               ]
-    return dict(image=image)
+    stack = cx.get('Stack')
+    image2=[
+        A(IMG(_src=URL('static/Photos', 'thumb%s'%stack), _alt="Capt"),
+                  _href=URL('static/Photos', stack)),
+              ]
+    return dict(Photos=image, Stacking=image2)
+    
+    

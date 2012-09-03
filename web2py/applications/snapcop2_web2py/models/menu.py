@@ -39,8 +39,8 @@ def _():
         (SPAN('Snapcop2',_style='color:magenta'),False, None, [
                 (T('Prise de vue'),False,URL('form', 'info')),
                 (T('Prise de vue Eric'),False,URL('prise_de_vue', 'Config')),
-                (T('Prise de vue Eric2'),False,URL('prise_de_vue5', 'Config'))
-                        
+                (T('Prise de vue Eric2'),False,URL('prise_de_vue5', 'Config')),
+                (T('Aperçu photos'),False,URL('thumbnail', 'thumb'))                       
                 
                         ])
                 ]

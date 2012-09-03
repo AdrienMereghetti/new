@@ -63,11 +63,23 @@ def main(lent):
         
         cmd = 'enfuse -o Stack%i.jpg --exposure-weight=1 --saturation-weight=0.1 --contrast-weight=1 --exposure-sigma=0 --exposure-mu=1 --gray-projector=l-star --hard-mask %s/%s/*.jpg' % (shoot_nb, dest_stack, series)
         subprocess.check_output(cmd, shell=True)
+        dest = '../web2py/applications/snapcop2_web2py/static/Photos'
+        photo = 'Stack%i.jpg' %shoot_nb
+        
+        shutil.copy2(photo, dest)
+        with Image(filename = photo) as img:
+            with img.clone() as i:
+                i.resize((100), (67))
+                i.save(filename='%s/thumb%s'% (dest, photo))
+        cx.set('Stack', photo)
+        
         shutil.move('Stack%i.jpg' % shoot_nb, '%s/%s'% (dest_stack, series))
         
         stack = '%s/%s/Stack%i.jpg' % (dest_stack, series, shoot_nb)
         # publication stacking terminé
         cx.publish('stacking', stack)
-        frames = 0
-        cx.set('frames', frames)
+        #frames = 0
+        #cx.set('frames', frames)
+        
+        
         print 'Finish !!'
