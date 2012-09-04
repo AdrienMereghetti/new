@@ -452,3 +452,8 @@
 04-09-2012, serie30, data/images/capt20120904161637.jpg
 04-09-2012, serie30, data/images/capt20120904161644.jpg
 04-09-2012, serie30, data/images/capt20120904161650.jpg
+04-09-2012, serie31, data/images/capt20120904164639.jpg
+04-09-2012, serie31, data/images/capt20120904164646.jpg
+04-09-2012, serie31, data/images/capt20120904164653.jpg
+04-09-2012, serie31, data/images/capt20120904164659.jpg
+04-09-2012, serie31, data/images/capt20120904164706.jpg
