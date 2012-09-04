@@ -36,6 +36,7 @@ def main():
     cx = redis.Redis()
     frames = 0
     cx.set('frames', 0)    
+    interval = int(cx.get('interval'))
     stop = False
     while not stop:    
         print time.time(), 'capture preview ...'
@@ -106,7 +107,8 @@ def main():
             elif evt.type == pygame.locals.JOYAXISMOTION:
                 if evt.axis == 3:
                         if evt.value == 1:
-                            zoom = 0 
+                            zoom = 0
+                            a, b = 0, 0 
                         elif evt.value < 0.9 and evt.value > 0:
                             zoom = 1
                             x = 1300
@@ -130,7 +132,7 @@ def main():
                 pass
         while capt == "yes":
             for i in range(0, nb_photo):
-                    
+                time.sleep(interval)    
                 print 'capture image ...'
                 source_capture = 'data/capture.jpg'
                 camera.capture_image(source_capture)

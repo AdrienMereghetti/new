@@ -65,21 +65,32 @@ def main(lent):
         subprocess.check_output(cmd, shell=True)
         dest = '../web2py/applications/snapcop2_web2py/static/Photos'
         photo = 'Stack%i.jpg' %shoot_nb
-        
+        # envoi du résultat vers web2py
         shutil.copy2(photo, dest)
+        # diminution de la résolution de la photo
         with Image(filename = photo) as img:
             with img.clone() as i:
-                i.resize((100), (67))
+                i.resize((800), (533))
                 i.save(filename='%s/thumb%s'% (dest, photo))
-        cx.set('Stack', photo)
+        stack_envoi = '/snapcop2_web2py/static/Photos/%s'%photo
+        
+        thumb='%s/thumb%s'% (dest, photo)
+        print 'thumb', thumb
+        short_thumb = os.path.split(thumb)[1]
+        print 'short', short_thumb
+        thumb_envoi = '/snapcop2_web2py/static/Photos/%s'%short_thumb
+        print 'stackenvoi', stack_envoi
+        cx.set('Stack', thumb_envoi)
         
         shutil.move('Stack%i.jpg' % shoot_nb, '%s/%s'% (dest_stack, series))
         
         stack = '%s/%s/Stack%i.jpg' % (dest_stack, series, shoot_nb)
+        print 'stack',stack
         # publication stacking terminé
         cx.publish('stacking', stack)
         #frames = 0
         #cx.set('frames', frames)
-        
+        remove = '%s/Stack%i.jpg'%(dest, shoot_nb)
+        os.remove(remove)
         
         print 'Finish !!'

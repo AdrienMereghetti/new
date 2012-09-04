@@ -1,0 +1,36 @@
+Procédure:
+
+    * Identification de la prise de vue :
+        l'utilisateur entre diverse informations :
+            -Codification de la souche
+            -Substrat utilisé
+            -Durée de fermentation(jours)
+    
+    * Choisir le nombre de photo a prendre (une par une, 5 , 10, 15, 20, 25 ou 30 photos)
+        Lors de la prise de vue:
+            Liveview appareil photo afficher à l'écran pour positioné le sujet:
+                - possibilité de zoom sur l'écran de la liveview, et bouger l'image zoomer
+            Aperçu de la dernière photo prise avec décompte des photos restante
+            
+    * Mouvement du moteur a la main
+        
+    * Demande  de stacking:
+        - rapide(photo compréssé) 
+        - lent(photo plein format)
+    
+    * Demande d'envoi de photo sur la page Web2py
+    
+    * Visionage de la derniere série sur Web2py:
+        Slider avec:
+            Nom de la souche
+            Miniature de la photo
+        Photo stacké avec divers infos:
+            Inscrite par l'utilisateur:
+                - Souche
+                - Substrat
+                - Durée de fermentation
+            Calculé par le programme(pas encore implémenté)
+                - Nombre de spores
+                - Surface du mycelium
+                
+

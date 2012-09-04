@@ -1,0 +1,43 @@
+{{extend 'layout.html'}}
+{{import os}}
+
+
+<script src='/snapcop2_web2py/static/js/jquery.js' type="text/javascript"></script>
+<script src='/snapcop2_web2py/static/js/jquery.bxSlider.min.js' type="text/javascript"></script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#slider1').bxSlider();
+  });
+</script>
+
+<hr />
+
+
+
+
+
+
+<h2>Liste photos de {{=auteur}}</h2>
+<hr />
+<ul id="slider1">
+  {{for thumb in thumbs:}}
+    {{
+    short_name = os.path.split(thumb)[1]
+    short_name = os.path.splitext(short_name)[0]
+    }}
+    <li>{{=souche}} <img src="{{=thumb}}" /> </li>
+    
+  {{pass}}
+    
+</ul>
+<hr />
+<ul>
+<li>{{=stacking}}</li>
+<li> <img src="{{=stack}}" /> </li>
+<li>{{=souche}}</li>
+<li>{{=substrat}}</li>
+<li>{{=fermentation}}</li>
+<li>{{=spore}}</li>
+<li>{{=mycelium}}</li>
+</ul>  

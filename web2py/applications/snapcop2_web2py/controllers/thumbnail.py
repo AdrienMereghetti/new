@@ -1,22 +1,24 @@
 import redis
 
 def thumb():
+    """
+    Renvoie dans photos la liste des x dernières photos prises
+  
+    """
+    # connexion redis
+    # récupérer le nb de photo prises (GET frames)
+    # récupérere la liste des chemins des photos (LRANGE -5 -1)
+
     cx=redis.Redis()
     frames = int(cx.get('frames'))
-    image=[]
-    serie = cx.lrange('captures', -frames, -1)
-    
-    for i in range(0, frames):
-        photo = serie[i]
-        image+=[
-        A(IMG(_src=URL('static/Photos', 'thumb%s'%photo[-18:]), _alt="Capt"),
-                  _href=URL('static/Photos', photo[-22:])),
-              ]
+    photos = cx.lrange('photo_envoi', -frames, -1)
+    thumbs = cx.lrange('thumb_envoi', -frames, -1)
     stack = cx.get('Stack')
-    image2=[
-        A(IMG(_src=URL('static/Photos', 'thumb%s'%stack), _alt="Capt"),
-                  _href=URL('static/Photos', stack)),
-              ]
-    return dict(Photos=image, Stacking=image2)
-    
-    
+    souche = 'Souche : %s'%str(cx.get('souche'))
+    substrat = 'Substrat : %s'%str(cx.get('substrat'))
+    fermentation = 'Durée de fermentation : %s jours'%str(cx.get('fermentation'))
+    stacking = 'Stack %s'%souche
+    spore = 'Nombre de spores : 0'
+    mycelium = 'Surface du mycelium : 0'
+    auteur = 'None'
+    return locals()
