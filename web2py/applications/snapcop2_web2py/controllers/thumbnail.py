@@ -20,5 +20,5 @@ def thumb():
     stacking = 'Stack %s'%souche
     spore = 'Nombre de spores : 0'
     mycelium = 'Surface du mycelium : 0'
-    auteur = 'None'
+    auteur = 'Eric DURAND'
     return locals()

@@ -40,7 +40,8 @@ def _():
                 (T('Prise de vue'),False,URL('form', 'info')),
                 #(T('Prise de vue Eric'),False,URL('prise_de_vue', 'Config')),
                 #(T('Prise de vue Eric2'),False,URL('prise_de_vue5', 'Config')),
-                (T('Aperçu photos'),False,URL('thumbnail', 'thumb'))                       
+                (T('Aperçu photos'),False,URL('thumbnail', 'thumb')),
+                (T('Aperçu photos alternatif'),False,URL('thumbnail_alt', 'thumb'))
                 
                         ])
                 ]

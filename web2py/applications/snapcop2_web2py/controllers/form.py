@@ -28,7 +28,7 @@ def info():
         cx.set('interval', interval)
         #redirect(URL(request.application, 'capture', 'capture'))
         
-        return dict(form=form, vars=form.vars)
+        return locals()
     elif form.errors:
         response.flash="Formulaire invalide"
     else:
